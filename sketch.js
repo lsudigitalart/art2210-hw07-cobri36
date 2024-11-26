@@ -24,15 +24,15 @@ function setup()
 {
     createCanvas(600,600);
 
-    let button = createButton('Start');
-    button.mousePressed(playSound);
-
     fft = new p5.FFT();
     amplitude = new p5.Amplitude();
     amplitude.setInput(sound);
 
     textAlign(CENTER,CENTER);
     textSize(32);
+
+    fill(0);
+    text("Tap the Spacebar to Play Music!", width / 2, height / 2);
 }
 
 function draw()
@@ -58,8 +58,8 @@ function draw()
     }
 }
 
-function playSound() {
-    if (!soundPlayed) {
+function keyPressed() {
+    if (key === ' ' && !soundPlayed) {
         sound.play();
         startTime = millis();
         soundPlayed = true;
