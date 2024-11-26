@@ -2,7 +2,18 @@ let sound;
 let soundPlayed = false;
 let startTime;
 let amplitude;
-let fft
+let fft;
+let lyrics = [
+    {time: .95, text: "The"},
+    {time: .98, text: "People"},
+    {time: 1100, text: "of"},
+    {time: 1200, text: "the"},
+    {time: 1300, text: "underground"},
+    {time: 2300, text: "deserve"},
+    {time: 2800, text: "to"},
+    {time: 3000, text: "breathe."}
+];
+let customFont;
 
 function preload()
 {
@@ -26,7 +37,7 @@ function setup()
 
 function draw()
 {
-    background(220);
+    background(57, 225, 20);
     
     if (!soundPlayed)
     {
