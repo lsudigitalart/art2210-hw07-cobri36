@@ -4,8 +4,8 @@ let startTime;
 let amplitude;
 let fft;
 let lyrics = [
-    {time: .95, text: "The"},
-    {time: .98, text: "People"},
+    {time: 950, text: "The"},
+    {time: 980, text: "People"},
     {time: 1100, text: "of"},
     {time: 1200, text: "the"},
     {time: 1300, text: "underground"},
@@ -23,46 +23,57 @@ function preload()
 function setup()
 {
     createCanvas(600,600);
-    startTime = millis();
-    print(startTime)
 
     let button = createButton('Start');
     button.mousePressed(playSound);
 
     fft = new p5.FFT();
-
     amplitude = new p5.Amplitude();
     amplitude.setInput(sound);
+
+    textAlign(CENTER,CENTER);
+    textSize(32);
 }
 
 function draw()
 {
     background(57, 225, 20);
     
-    if (!soundPlayed)
+    if (soundPlayed)
     {
+        let currentTime = millis() - startTime;
+
+        //Display lyrics based on timing
+        for (let lyric of lyrics) {
+            if (currentTime > lyric.time && currentTime < lyric.time + 800) {
+                fill(0);
+                text(lyric.text, width/2, height/2);
+            }
+        }
+        
+        //Draw audio visualizer after lyrics display
+        if (currentTime > lyrics[lyrics.length - 1].time + 1000) {
+            drawVisualizer();
+        }
+    }
+}
+
+function playSound() {
+    if (!soundPlayed) {
         sound.play();
+        startTime = millis();
         soundPlayed = true;
-
     }
+}
 
-    if(triggerAnimation)
-    {
-        background(random(255), random(255), random(255))
-    }
+function drawVisualizer() {
+    let spectrum = fft.analyze();
+    noStroke();
+    fill(0, 0, 0, 150);
 
-    if (millis() = startTime > 3000)
-    {
-        ellipse(width/2, heigh/2, 50);
-    }
-
-    //print(sound.getLevel())
-    let level = amplitude.getLevel()
-    let threshold = 0.05; //adjust value for bass
-
-    if (level > threshold) 
-    {
-        fill (0, 0, 0);
-        ellipse(width / 2, height /2, 50, 50);
+    for (let i = 0; i < spectrum.length; i++) {
+        let x = map(i, 0, spectrum.length, 0, width);
+        let h = -height + map(spectrum[i], 0, 255, height, 0);
+        rect(x, height, width/spectrum.length, h);
     }
 }
