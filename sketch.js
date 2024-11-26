@@ -1,7 +1,10 @@
 let sound;
 
 function preload() {
-    sound = loadSound('audio.mp3', soundLoaded);  // Add a callback to check if the sound loads
+    sound = loadSound('audio.mp3', 
+        () => { console.log('Sound loaded successfully!'); }, // Success callback
+        () => { console.log('Error loading sound.'); }       // Error callback
+    );
 }
 
 function setup() {
