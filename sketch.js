@@ -1,4 +1,4 @@
-et sound;
+let sound;
 let fft;
 let amplitude;
 let soundPlayed = false;
